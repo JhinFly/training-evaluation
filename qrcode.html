@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>生成二维码</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            text-align: center;
+            background-color: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            margin-bottom: 30px;
+            color: #2c3e50;
+        }
+        #qrcode {
+            margin: 20px 0;
+        }
+        .info {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+        }
+        p {
+            margin-bottom: 10px;
+        }
+        .important {
+            font-weight: bold;
+            color: #dc3545;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>培训满意度评价二维码</h1>
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=http://localhost:8000" alt="培训满意度评价二维码" style="margin: 20px 0;">
+        <div class="info">
+            <p>扫描上方二维码，即可填写培训满意度评价表。</p>
+            <p class="important">注意：此二维码长期有效，只要服务器保持运行。</p>
+            <p>后台管理地址：<a href="http://localhost:8000/admin.html" target="_blank">http://localhost:8000/admin.html</a></p>
+        </div>
+    </div>
+</body>
+</html>

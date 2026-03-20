@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>培训满意度综合评价表</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #2c3e50;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        input[type="text"],
+        input[type="number"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        .rating {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .rating label {
+            font-weight: normal;
+            margin: 0;
+        }
+        .rating input[type="radio"] {
+            margin-right: 5px;
+        }
+        button {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        .success-message {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            border-radius: 4px;
+            text-align: center;
+            display: none;
+        }
+    </style>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>培训满意度综合评价表</h1>
+        <form id="evaluationForm">
+            <div class="form-group">
+                <label for="traineeName">培训人员姓名：</label>
+                <input type="text" id="traineeName" name="traineeName" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="department">部门：</label>
+                <input type="text" id="department" name="department" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="trainingCourse">培训课程：</label>
+                <input type="text" id="trainingCourse" name="trainingCourse" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="trainingDate">培训日期：</label>
+                <input type="text" id="trainingDate" name="trainingDate" placeholder="YYYY-MM-DD" required>
+            </div>
+            
+            <div class="form-group">
+                <label>1. 培训内容的实用性：</label>
+                <div class="rating">
+                    <label><input type="radio" name="contentUtility" value="5" required> 5分（非常实用）</label>
+                    <label><input type="radio" name="contentUtility" value="4"> 4分</label>
+                    <label><input type="radio" name="contentUtility" value="3"> 3分</label>
+                    <label><input type="radio" name="contentUtility" value="2"> 2分</label>
+                    <label><input type="radio" name="contentUtility" value="1"> 1分（不实用）</label>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>2. 培训讲师的专业水平：</label>
+                <div class="rating">
+                    <label><input type="radio" name="instructorLevel" value="5" required> 5分（非常专业）</label>
+                    <label><input type="radio" name="instructorLevel" value="4"> 4分</label>
+                    <label><input type="radio" name="instructorLevel" value="3"> 3分</label>
+                    <label><input type="radio" name="instructorLevel" value="2"> 2分</label>
+                    <label><input type="radio" name="instructorLevel" value="1"> 1分（不专业）</label>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>3. 培训方法的有效性：</label>
+                <div class="rating">
+                    <label><input type="radio" name="methodEffectiveness" value="5" required> 5分（非常有效）</label>
+                    <label><input type="radio" name="methodEffectiveness" value="4"> 4分</label>
+                    <label><input type="radio" name="methodEffectiveness" value="3"> 3分</label>
+                    <label><input type="radio" name="methodEffectiveness" value="2"> 2分</label>
+                    <label><input type="radio" name="methodEffectiveness" value="1"> 1分（无效）</label>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>4. 培训环境与设施：</label>
+                <div class="rating">
+                    <label><input type="radio" name="environment" value="5" required> 5分（非常好）</label>
+                    <label><input type="radio" name="environment" value="4"> 4分</label>
+                    <label><input type="radio" name="environment" value="3"> 3分</label>
+                    <label><input type="radio" name="environment" value="2"> 2分</label>
+                    <label><input type="radio" name="environment" value="1"> 1分（差）</label>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>5. 整体培训满意度：</label>
+                <div class="rating">
+                    <label><input type="radio" name="overallSatisfaction" value="5" required> 5分（非常满意）</label>
+                    <label><input type="radio" name="overallSatisfaction" value="4"> 4分</label>
+                    <label><input type="radio" name="overallSatisfaction" value="3"> 3分</label>
+                    <label><input type="radio" name="overallSatisfaction" value="2"> 2分</label>
+                    <label><input type="radio" name="overallSatisfaction" value="1"> 1分（不满意）</label>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="suggestions">意见与建议：</label>
+                <textarea id="suggestions" name="suggestions" placeholder="请输入您的意见与建议"></textarea>
+            </div>
+            
+            <button type="submit">提交评价</button>
+        </form>
+        
+        <div class="success-message" id="successMessage">
+            评价提交成功！感谢您的反馈。
+        </div>
+    </div>
+    
+    <script>
+        // Firebase配置
+        const firebaseConfig = {
+            apiKey: "AIzaSyDFU8nBcUMGAWBtKWO8pz2WfL8vEanwPMc",
+            authDomain: "training-evaluation-9ab25.firebaseapp.com",
+            databaseURL: "https://training-evaluation-9ab25-default-rtdb.firebaseio.com",
+            projectId: "training-evaluation-9ab25",
+            storageBucket: "training-evaluation-9ab25.firebasestorage.app",
+            messagingSenderId: "163913714869",
+            appId: "1:163913714869:web:d3b33718732614adbb02fc",
+            measurementId: "G-KL1JV1K0YD"
+        };
+        
+        // 初始化Firebase
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+        
+        document.getElementById('evaluationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // 收集表单数据
+            const formData = new FormData(this);
+            const evaluationData = {};
+            formData.forEach((value, key) => {
+                evaluationData[key] = value;
+            });
+            
+            // 添加提交时间
+            evaluationData.submitTime = new Date().toISOString();
+            
+            // 保存数据到Firebase
+            database.ref('evaluations').push(evaluationData)
+                .then(() => {
+                    // 显示成功消息
+                    document.getElementById('successMessage').style.display = 'block';
+                    // 重置表单
+                    this.reset();
+                    // 3秒后隐藏成功消息
+                    setTimeout(() => {
+                        document.getElementById('successMessage').style.display = 'none';
+                    }, 3000);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('提交失败，请稍后重试');
+                });
+        });
+    </script>
+</body>
+</html>
